@@ -60,35 +60,50 @@
  *                              DEFINE
  ******************************************************************************/
 
-
-/**
- *  @Brief: declaring new type for usage in binary search as default type - int8_t
- *  @Usage: If different type is wanted to be used in binary search, then it have to be
- *          typedef with name BinS_BINSCH
- **/
-#if (BinS_BINSCH == FALSE)
-    typedef int8_t BinS_BINSCH;
-#else
-    typedef int64_t BinS_BINSCH;
-#endif /*__BinS_BINSCH_TYPE__*/
-
-#define int64_t lol
-
-#ifndef __DECRISING__
-#define __DECRISING__
-    #define DECRISING (0U)        /* by the exception that 0 means false */
+#ifndef __BinS_DECRISING__
+#define __BinS_DECRISING__
+    #define BinS_DECRISING (0U)        /* by the exception that 0 means false */
 #endif
 
+#ifndef __BinS_GROWING__
+#define __BinS_GROWING__
+    #define BinS_GROWING (!BinS_DECRISING)  /* logical negation of false is true which is DECRISING wanted value*/
+#endif
 
-#ifndef __GROWING__
-#define __GROWING__
-    #define GROWING (!DECRISING)  /* logical negation of false is true which is DECRISING wanted value*/
+#ifndef __BinS_NOT_FOUND__
+#define __BinS_NOT_FOUND__
+    #define BinS_NOT_FOUND (0U)  /* logical negation of false is true which is DECRISING wanted value*/
+#endif
+
+#ifndef __BinS_FOUND__
+#define __BinS_FOUND__
+    #define BinS_FOUND (!NOT_FOUND)  /* logical negation of false is true which is DECRISING wanted value*/
 #endif
 
 /*******************************************************************************
  *                              TYPEDEF
  ******************************************************************************/
 
+/**
+ *  @Brief: declaring new type for usage in binary search as default type - int8_t
+ *  @Usage: If different type is wanted to be used in binary search, then it have to be
+ *          ! typedef with name BinS_BINSCH
+ *          ! and compilation flag__BinS_BINSCH_TYPE__
+ *          ! declared before including BinS.h
+ **/
+#ifndef __BinS_BINSCH_TYPE__
+#define __BinS_BINSCH_TYPE__
+    typedef int8_t BinS_BINSCH;
+#endif /*__BinS_BINSCH_TYPE__*/
+
+/**
+ *  @Brief: structure declared as an output from binarySearch function
+ *          gives all needed information about given search
+ *  @param1: index - gives place in tab that first occour of element to search was found
+ *  @param2: foundValue - value that was given to search for, placed here for consistency of 
+ *           all needed informations. If value was not found it's set to 0
+ *  @param3: found - says if value was found (FOUND) or not (NOT_FOUND)
+ **/
 typedef struct {
     uint32_t    index;
     BinS_BINSCH foundValue;
@@ -120,7 +135,7 @@ typedef struct {
  * @Note: Array can be sorted in either growing or decrising secuences
  * 
  **/ 
-extern BinS_result BinSearch_BinS(  const uint32_t lengthOfArray,
+extern BinS_result BinS_SearchFunction(  const uint32_t lengthOfArray,
                                             BinS_BINSCH givenArray[ lengthOfArray ],
                                             BinS_BINSCH wantedElement,
                                             BinS_result(*comparator)(BinS_BINSCH arg1, BinS_BINSCH arg2)
