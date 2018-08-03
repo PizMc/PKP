@@ -150,7 +150,7 @@ extern BinS_MONOTONYE BinS_Monotony(const uint32_t lengthOfArray_cui32,
     BinS_COMPARATORE cprResult_e = BinS_EQUAL;
 
     /* if there is special comparator, then use it */
-    if (NULL == comparator)
+    if (NULL != comparator)
     {
         /* casting is safe, since it is essentialy same type, and difference is only in naming */
         cprResult_e = (BinS_COMPARATORE)comparator(givenArray_a[ first_ui32 ], givenArray_a[ last_ui32 ]);
@@ -267,38 +267,36 @@ static BinS_result BinSearchDecr(const uint32_t lengthOfArray_cui32,
     //BinS_result result_s = BinS_Init();
     BinS_INIT(result_s);
 
-    uint32_t index_ui32 = lengthOfArray_cui32 / (uint32_t)2U;    /* cast to make it clear */
+    uint32_t index_ui32 = 0U ;
     uint32_t head_ui32 = lengthOfArray_cui32 - 1U; /* -1 bc numering array starts from 0 not from 1 */
     uint32_t tail_ui32 = 0U;
-    uint32_t calcMem_ui32 = 0U;
-
-    while (FALSE == result_s.found 
-           || head_ui32 == tail_ui32 )
+    
+    while (head_ui32 >= tail_ui32)
     {
-        if (givenArray_a[ index_ui32 ] == wantedElement)
+        index_ui32 = (head_ui32 + tail_ui32) / 2U;
+
+        if (wantedElement > givenArray_a[ index_ui32 ])
         {
-            result_s.found = TRUE;
-            result_s.foundValue = givenArray_a[ index_ui32 ];
-            result_s.index = index_ui32;
+            head_ui32 = index_ui32 - 1U;
+        }
+        else if (wantedElement < givenArray_a[ index_ui32 ])
+        {
+            tail_ui32 = index_ui32 + 1U;
         }
         else
         {
-            if (wantedElement > givenArray_a[ index_ui32 ])
-            {
-                head_ui32 = index_ui32 -1U;     /* bc we allraedy know that under index_ui32 is not our element, but lowe */
-                calcMem_ui32 = BinS_ARR_LEN(head_ui32, tail_ui32) / (uint32_t)2U;
-
-                index_ui32 = head_ui32 - calcMem_ui32;
-            }
-            else
-            {
-                tail_ui32 = index_ui32 + 1U;    /* bc we allraedy know that under index_ui32 is not our element, but higher */
-                calcMem_ui32 = BinS_ARR_LEN(head_ui32, tail_ui32) / (uint32_t)2U;
-
-                index_ui32 = tail_ui32 + calcMem_ui32;
-            }
+            /* exit loop */
+            tail_ui32 = UINT32_MAX;
         }
     }/* while (FALSE == result_s.found) */
+
+    
+    if (givenArray_a[ index_ui32 ] == wantedElement)
+    {
+        result_s.found = TRUE;
+        result_s.foundValue = givenArray_a[ index_ui32 ];
+        result_s.index = index_ui32;
+    }
 
     return result_s;
 }
@@ -312,38 +310,36 @@ static BinS_result BinSearchIncr(const uint32_t lengthOfArray_cui32,
     //BinS_result result_s = BinS_Init();
     BinS_INIT(result_s);
 
-    uint32_t index_ui32 = lengthOfArray_cui32 / (uint32_t)2U;    /* cast to make it clear */
+    uint32_t index_ui32 = 0U ;
     uint32_t head_ui32 = lengthOfArray_cui32 - 1U; /* -1 bc numering array starts from 0 not from 1 */
     uint32_t tail_ui32 = 0U;
-    uint32_t calcMem_ui32 = 0U;
-
-    while (FALSE == result_s.found 
-           || head_ui32 == tail_ui32 )
+    
+    while (head_ui32 >= tail_ui32)
     {
-        if (givenArray_a[ index_ui32 ] == wantedElement)
+        index_ui32 = (head_ui32 + tail_ui32) / 2U;
+
+        if (wantedElement > givenArray_a[ index_ui32 ])
         {
-            result_s.found = TRUE;
-            result_s.foundValue = givenArray_a[ index_ui32 ];
-            result_s.index = index_ui32;
+            tail_ui32 = index_ui32 + 1U;
+        }
+        else if (wantedElement < givenArray_a[ index_ui32 ])
+        {
+            head_ui32 = index_ui32 - 1U;
         }
         else
         {
-            if (wantedElement < givenArray_a[ index_ui32 ])
-            {
-                head_ui32 = index_ui32 -1U;     /* bc we allraedy know that under index_ui32 is not our element, but lowe */
-                calcMem_ui32 = BinS_ARR_LEN(head_ui32, tail_ui32) / (uint32_t)2U;
-
-                index_ui32 = head_ui32 - calcMem_ui32;
-            }
-            else
-            {
-                tail_ui32 = index_ui32 + 1U;    /* bc we allraedy know that under index_ui32 is not our element, but higher */
-                calcMem_ui32 = BinS_ARR_LEN(head_ui32, tail_ui32) / (uint32_t)2U;
-
-                index_ui32 = tail_ui32 + calcMem_ui32;
-            }
+            /* exit loop */
+            tail_ui32 = UINT32_MAX;
         }
     }/* while (FALSE == result_s.found) */
+
+    
+    if (givenArray_a[ index_ui32 ] == wantedElement)
+    {
+        result_s.found = TRUE;
+        result_s.foundValue = givenArray_a[ index_ui32 ];
+        result_s.index = index_ui32;
+    }
 
     return result_s;
 }
@@ -419,3 +415,13 @@ static BinS_result BinSearchUsr(const uint32_t lengthOfArray_cui32,
 
     return result_s;
 }
+
+/****
+ *      TODO
+ * 
+ * 
+ *  ADD COMENTS
+ * ADD RULE HOW TO CREATE USER DEFINE COMPARATOR
+ * TEST PROGRAM
+ * 
+ **********/
