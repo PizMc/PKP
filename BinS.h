@@ -157,7 +157,7 @@ typedef enum
  * @Note: Array can be sorted in either growing or decrising secuences
  * 
  **/ 
-extern BinS_result BinS_SearchFunction(const uint32_t lengthOfArray_cui32,
+extern BinS_result BinS_BinSearch(const uint32_t lengthOfArray_cui32,
                                        const BinS_BINSCH givenArray_a[ lengthOfArray_cui32 ],
                                        const BinS_BINSCH wantedElement,
                                        int8_t(*comparator)(BinS_BINSCH arg1, BinS_BINSCH arg2)
